@@ -1,8 +1,9 @@
 import os
-import pandas
+import pandas as pd
+from torch.utils.data import Dataset
 from torchvision.io import read_image
 
-class ImageNet(Dataset):
+class ImageNetDataset(Dataset):
     def __init__(self, 
                  annotations_file,
                  img_dir,
@@ -25,3 +26,12 @@ class ImageNet(Dataset):
         if self.target_transform:
             label = self.target_transform(label)
         return image, label
+
+train_labels_path = "/Users/nara/personal/paper2code/AlexNet/utils/train_labels.csv"
+train_images_path = "/Users/nara/personal/datasets/imagenet-mini/train/"
+
+val_labels_path = "/Users/nara/personal/paper2code/AlexNet/utils/val_labels.csv"
+val_images_path = "/Users/nara/personal/datasets/imagenet-mini/val/"
+
+train_data = ImageNetDataset(train_labels_path, train_images_path)
+val_data = ImageNetDataset(val_labels_path, val_images_path)

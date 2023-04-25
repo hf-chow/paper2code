@@ -25,7 +25,7 @@ def make_labels(dir, output_fname):
             df2 = pd.DataFrame(data=d)
             df = pd.concat([df, df2])
 
-    df.to_csv(output_fname)
+    df.to_csv(output_fname, index=False)
 
 if __name__ == "__main__":
     print("Creating annotations file for train and val datasets")
