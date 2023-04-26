@@ -13,4 +13,6 @@ def transform_img(img):
     alexnet_transform = transforms.Compose([transforms.Resize(255),
                                             transforms.RandomHorizontalFlip(0.5),
                                             transforms.ToTensor(),
-                                            transforms.Normalize(mean, std)
+                                            transforms.Normalize(mean, std)])
+
+    return alexnet_transform(img).unsqueeze(0)
