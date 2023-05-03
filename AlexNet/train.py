@@ -5,10 +5,10 @@ from torchvision.transforms import Lambda
 import torch
 from torch.utils.data import DataLoader
 
-train_labels_path = "/Users/nara/personal/paper2code/AlexNet/utils/train_labels.csv"
+train_labels_path = "/Users/nara/personal/paper2code/AlexNet/train_labels.csv"
 train_images_path = "/Users/nara/personal/datasets/imagenet-mini/train/"
 
-val_labels_path = "/Users/nara/personal/paper2code/AlexNet/utils/val_labels.csv"
+val_labels_path = "/Users/nara/personal/paper2code/AlexNet/val_labels.csv"
 val_images_path = "/Users/nara/personal/datasets/imagenet-mini/val/"
 
 device = ("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
@@ -45,8 +45,10 @@ def train(dataloader, model, loss_fn, optim):
         loss.backward()
         optim.step()
 
-        loss, current = loss.item(), (batch+1)*len(X)
-        print(f"loss: {loss:>7f} [{current:>5d}/{size:>5d}]")
+    if batch % 100 == 0:
+        loss, current = loss.item(), (batch + 1) * len(X)
+        print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+
 
 def val(dataloader, model, loss_fn):
     size = len(dataloader.dataset)
@@ -68,5 +70,5 @@ epoch = 10
 for i in range(epoch):
     print(f"Epoch {i+1}\n-------------------------------")
     train(train_dataloader, model, loss_fn, optim)
-    test(test_dataloader, model, loss_fn)
+    test(val_dataloader, model, loss_fn)
 print("Complete")

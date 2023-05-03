@@ -19,7 +19,12 @@ def make_labels(dir, output_fname):
     folders = os.listdir(dir)
 
     for folder in folders:
-        fnames = os.listdir()
+        folder_dir = os.path.join(dir, folder)
+        print(folder_dir)
+        try:
+            fnames = os.listdir(folder_dir)
+        except:
+            pass
         for fname in fnames:
             d = {"fname": [fname], "label": [folder]};
             df2 = pd.DataFrame(data=d)

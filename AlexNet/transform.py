@@ -17,4 +17,4 @@ def transform_img(img):
                                                                  std=[0.229, 0.224, 0.225])
                                             ])
 
-    return alexnet_transform(img).unsqueeze(0)
+    return alexnet_transform(img)
