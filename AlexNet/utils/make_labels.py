@@ -10,25 +10,25 @@ idx 1 as labels
 """
 
 DATASET_PATH = "/Users/nara/personal/datasets/imagenet-mini"
-TRAIN_PATH = os.path.join(DATASET_PATH, "train")
-VAL_PATH = os.path.join(DATASET_PATH, "val")
+TRAIN_PATH = os.path.join(DATASET_PATH, "train_")
+VAL_PATH = os.path.join(DATASET_PATH, "val_")
 
 
 def make_labels(dir, output_fname):
     df = pd.DataFrame(columns=["fname", "label"])
     folders = os.listdir(dir)
+    label_dict = {k:v for v, k in enumerate(folders)}
 
     for folder in folders:
         folder_dir = os.path.join(dir, folder)
-        print(folder_dir)
         try:
             fnames = os.listdir(folder_dir)
+            for fname in fnames:
+                d = {"fname": [fname], "label": [label_dict[folder]]};
+                df2 = pd.DataFrame(data=d)
+                df = pd.concat([df, df2])
         except:
             pass
-        for fname in fnames:
-            d = {"fname": [fname], "label": [folder]};
-            df2 = pd.DataFrame(data=d)
-            df = pd.concat([df, df2])
 
     df.to_csv(output_fname, index=False)
 

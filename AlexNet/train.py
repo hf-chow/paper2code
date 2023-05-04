@@ -34,11 +34,16 @@ optim = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9)
 train_dataloader = DataLoader(train_data, batch_size=BATCH_SIZE)
 val_dataloader = DataLoader(val_data, batch_size=BATCH_SIZE)
 
+for X, y in train_dataloader:
+    print(f"{X.shape}")
+    print(f"{y.shape}")
+
 def train(dataloader, model, loss_fn, optim):
     size = len(dataloader.dataset)
     model.train()
-    for batch, (X, y) in enumerate(dataloader):
-        X, y = X.to(device), y.to(device)
+    for batch, data in enumerate(dataloader):
+        print(data)
+        X, y = data[0].to(device), data[1].to(device)
         pred = model(X)
         loss = loss_fn(pred, y)
         optim.zero_grad()
@@ -56,8 +61,8 @@ def val(dataloader, model, loss_fn):
     model.eval()
     val_loss, correct = 0, 0
     with torch.no_grad():
-        for X, y in dataloader:
-            X, y = X.to(device), y.to(device)
+        for data in dataloader:
+            X, y = data[0].to(device), data[1].to(device)
             pred = model(X)
             val_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
