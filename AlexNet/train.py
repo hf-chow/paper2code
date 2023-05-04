@@ -34,15 +34,10 @@ optim = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9)
 train_dataloader = DataLoader(train_data, batch_size=BATCH_SIZE)
 val_dataloader = DataLoader(val_data, batch_size=BATCH_SIZE)
 
-for X, y in train_dataloader:
-    print(f"{X.shape}")
-    print(f"{y.shape}")
-
 def train(dataloader, model, loss_fn, optim):
     size = len(dataloader.dataset)
     model.train()
     for batch, data in enumerate(dataloader):
-        print(data)
         X, y = data[0].to(device), data[1].to(device)
         pred = model(X)
         loss = loss_fn(pred, y)
@@ -66,14 +61,14 @@ def val(dataloader, model, loss_fn):
             pred = model(X)
             val_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-            test_loss /= num_batches
+            val_loss /= num_batches
             correct /= size
-            print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+            print(f"Val Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {val_loss:>8f} \n")
 
-epoch = 10
+epoch = 5
 
 for i in range(epoch):
     print(f"Epoch {i+1}\n-------------------------------")
     train(train_dataloader, model, loss_fn, optim)
-    test(val_dataloader, model, loss_fn)
+    val(val_dataloader, model, loss_fn)
 print("Complete")

@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from torch.utils.data import Dataset
-from torchvision.io import read_image, ImageReadMode
+from PIL import Image
 
 class ImageNetDataset(Dataset):
     """
@@ -31,7 +31,7 @@ class ImageNetDataset(Dataset):
 
     def __getitem__(self, idx):
         img_path = os.path.join(self.img_dir, self.img_labels.iloc[idx, 0])
-        image = read_image(img_path, mode=ImageReadMode.RGB)
+        image = Image.open(img_path).convert("RGB")
 
         label = self.img_labels.iloc[idx, 1]
         if self.transform:
@@ -39,13 +39,3 @@ class ImageNetDataset(Dataset):
         if self.target_transform:
             label = self.target_transform(label)
         return image, label
-"""
-train_labels_path = "/Users/nara/personal/paper2code/AlexNet/utils/train_labels.csv"
-train_images_path = "/Users/nara/personal/datasets/imagenet-mini/train/"
-
-val_labels_path = "/Users/nara/personal/paper2code/AlexNet/utils/val_labels.csv"
-val_images_path = "/Users/nara/personal/datasets/imagenet-mini/val/"
-
-train_data = ImageNetDataset(train_labels_path, train_images_path)
-val_data = ImageNetDataset(val_labels_path, val_images_path)
-"""

@@ -1,4 +1,4 @@
-from torch import nn
+from torch import nn, flatten
 
 class AlexNet(nn.Module):
     """
@@ -23,7 +23,7 @@ class AlexNet(nn.Module):
                 nn.ReLU(),
                 nn.MaxPool2d(kernel_size=3, stride=2),
                 nn.Flatten(),
-                nn.Linear(256, 4096),
+                nn.Linear(256*6*6, 4096),
                 nn.ReLU(),
                 nn.Dropout(p=0.5),
                 nn.Linear(4096, 4096),
@@ -34,5 +34,5 @@ class AlexNet(nn.Module):
 
     def forward(self, x):
         x = self.net(x)
-        x = torch.flatten(x, 1)
+        x = flatten(x, 1)
         return x
