@@ -45,9 +45,9 @@ def train(dataloader, model, loss_fn, optim):
         loss.backward()
         optim.step()
 
-    if batch % 100 == 0:
-        loss, current = loss.item(), (batch + 1) * len(X)
-        print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        if batch % 100 == 0:
+            loss, current = loss.item(), (batch + 1) * len(X)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 
 def val(dataloader, model, loss_fn):
