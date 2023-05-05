@@ -10,7 +10,7 @@ We will write another tansforms recipe later that something else
 """
 
 def transform_img(img):
-    alexnet_transform = transforms.Compose([transforms.Resize(size=(255,255)),
+    alexnet_transform = transforms.Compose([transforms.Resize(size=(224,224)),
                                             transforms.RandomHorizontalFlip(0.5),
                                             transforms.ToTensor(),
                                             transforms.Normalize(mean=[0.485, 0.456, 0.406],

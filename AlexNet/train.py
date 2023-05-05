@@ -29,7 +29,8 @@ val_data = ImageNetDataset(val_labels_path,
 model = AlexNet().to(device)
 
 loss_fn = torch.nn.CrossEntropyLoss()
-optim = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9)
+# Original lr=1e-4
+optim = torch.optim.SGD(model.parameters(), lr=1e-3, momentum=0.9)
 
 train_dataloader = DataLoader(train_data, batch_size=BATCH_SIZE)
 val_dataloader = DataLoader(val_data, batch_size=BATCH_SIZE)
@@ -61,11 +62,13 @@ def val(dataloader, model, loss_fn):
             pred = model(X)
             val_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-            val_loss /= num_batches
-            correct /= size
-            print(f"Val Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {val_loss:>8f} \n")
+            
+    val_loss /= num_batches
+    correct /= size
+    print(f"Val Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {val_loss:>8f} \n")
 
-epoch = 5
+#Original 90 epochs
+epoch = 10 
 
 for i in range(epoch):
     print(f"Epoch {i+1}\n-------------------------------")
